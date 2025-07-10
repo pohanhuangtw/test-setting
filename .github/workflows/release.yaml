@@ -18,11 +18,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up GitHub CLI
-        uses: cli/gh-action@v2
-        with:
-          version: latest
-
       - name: Echo PR Title
         run: |
           echo "PR Title: ${{ github.event.pull_request.title }}"
