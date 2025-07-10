@@ -3,7 +3,7 @@ name: PR Label & Draft Release
 on:
   workflow_dispatch:
   pull_request:
-    types: [closed]  # 你也可以改成 [labeled] 或 workflow_dispatch 測試
+    types: [opened, reopened, synchronize]
 
 jobs:
   label-and-release:
