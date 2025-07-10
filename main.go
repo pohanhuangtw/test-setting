@@ -24,7 +24,7 @@ func div2(a int, b int) int {
 
 func main() {
 	fmt.Println(add(1, 2))
-	fmt.Println(sub(1, 2))
+	fmt.Println(sub(1, 22))
 	fmt.Println(mul(1, 2))
 	fmt.Println(div(1, 2))
 	fmt.Println(div2(1, 2))
