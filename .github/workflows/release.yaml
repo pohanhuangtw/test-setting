@@ -1,0 +1,40 @@
+name: PR Label & Draft Release
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [closed]  # 你也可以改成 [labeled] 或 workflow_dispatch 測試
+
+jobs:
+  label-and-release:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write    # 需要建立 release
+      pull-requests: write  # 需要編輯 PR
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up GitHub CLI
+        uses: cli/gh-action@v2
+        with:
+          version: latest
+
+      - name: Echo PR Title
+        run: |
+          echo "PR Title: ${{ github.event.pull_request.title }}"
+
+      - name: Add labels to the PR
+        run: |
+          gh pr edit ${{ github.event.pull_request.number }} --add-label "bug,help wanted"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create draft release
+        run: |
+          TAG_NAME=$(echo "${{ github.head_ref }}" | sed 's/\//-/g')
+          gh release create "$TAG_NAME" --title "$TAG_NAME" --notes "Draft release from PR #${{ github.event.pull_request.number }}" --draft
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
